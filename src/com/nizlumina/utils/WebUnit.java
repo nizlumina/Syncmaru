@@ -10,7 +10,7 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.nizlumina;
+package com.nizlumina.utils;
 
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Callback;
@@ -85,10 +85,16 @@ public class WebUnit
     private static final String userAgentKey = "User-Agent";
     private static final String userAgent = "minori-android";
     private final OkHttpClient mClient;
+    private String mUserAgent;
 
     public WebUnit()
     {
         mClient = new OkHttpClient();
+    }
+
+    public void setUserAgent(String mUserAgent)
+    {
+        this.mUserAgent = mUserAgent;
     }
 
     public OkHttpClient getClient()
@@ -142,9 +148,12 @@ public class WebUnit
 
     private Request getFormattedRequest(String url)
     {
+        String agent;
+        if (mUserAgent != null) agent = mUserAgent;
+        else agent = userAgent;
         return new Request.Builder()
                 .url(url)
-                .addHeader(userAgentKey, userAgent).build();
+                .addHeader(userAgentKey, agent).build();
     }
 
     /**
