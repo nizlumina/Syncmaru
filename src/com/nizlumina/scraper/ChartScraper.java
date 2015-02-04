@@ -1,4 +1,6 @@
-package com.nizlumina;
+package com.nizlumina.scraper;
+
+import com.nizlumina.model.LiveChartObject;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,39 +16,46 @@ import java.util.List;
 public class ChartScraper
 {
     //We only run this once a month. Promise.
-    private static final String endpoint = "https://livechart.me/";
-    private static final String objectSelector = ".card.ng-scope";
-    private static final String innerMal = "thumb-link";
-    private static final String innerTitle = "card__title";
-    private static final String innerStudio = "card__studio";
-    private static final String innerSource = "info_box", innerSourceString = "Source";
+    private static final String ENDPOINT = "https://livechart.me/";
+    private static final String OBJECT_SELECTOR = ".card.ng-scope";
+    private static final String INNER_MAL = "thumb-link";
+    private static final String INNER_TITLE = "card__title";
+    private static final String INNER_STUDIO = "card__studio";
+    private static final String INNER_SOURCE = "info_box", INNER_SOURCE_STRING = "Source";
     private boolean logging = false;
+    private Season mScrapedSeason;
+
+    public Season getScrapedSeason()
+    {
+        return mScrapedSeason;
+    }
 
     public void setLogging(boolean enabled)
     {
         logging = enabled;
     }
 
-    public void scrapeData(File htmlFile)
+    public List<LiveChartObject> scrapeData(File htmlFile)
     {
         try
         {
-            process(Jsoup.parse(htmlFile, "UTF-8"));
+            return process(Jsoup.parse(htmlFile, "UTF-8"));
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
+        return null;
     }
 
     private List<LiveChartObject> process(Document document)
     {
         List<LiveChartObject> output = new ArrayList<LiveChartObject>();
-        Season currSeason = Season.getSeason(document.title());
-        System.out.print("Current season: " + currSeason.name());
+        mScrapedSeason = Season.getSeason(document.title());
+        System.out.print("Current season: " + mScrapedSeason.name());
 
         //Get each main card
-        Elements cardElements = document.select(objectSelector);
+        Elements cardElements = document.select(OBJECT_SELECTOR);
         System.out.println("\nElement Size: " + cardElements.size());
 
         int index = 0;
@@ -55,7 +64,7 @@ public class ChartScraper
             LiveChartObject liveChartObject = new LiveChartObject();
 
             //Get MAL
-            Elements malClassRaws = card.getElementsByClass(innerMal);
+            Elements malClassRaws = card.getElementsByClass(INNER_MAL);
             if (malClassRaws.size() > 0)
             {
                 //first index of the element contains a link to MAL
@@ -69,25 +78,25 @@ public class ChartScraper
             }
 
             //Get title (though title in the database will still follow Hummingbird/MAL)
-            Elements cardTitleRaws = card.getElementsByClass(innerTitle);
+            Elements cardTitleRaws = card.getElementsByClass(INNER_TITLE);
             for (Element cardTitleRaw : cardTitleRaws)
             {
                 liveChartObject.setName(cardTitleRaw.child(0).ownText());
             }
 
             //Get studio
-            Elements cardStudioRaws = card.getElementsByClass(innerStudio);
+            Elements cardStudioRaws = card.getElementsByClass(INNER_STUDIO);
             for (Element cardStudio : cardStudioRaws)
             {
                 liveChartObject.setStudio(cardStudio.child(0).ownText());
             }
 
             //Get source type
-            Elements infoBoxesRaws = card.getElementsByClass(innerSource);
+            Elements infoBoxesRaws = card.getElementsByClass(INNER_SOURCE);
             for (Element infoBox : infoBoxesRaws)
             {
                 String innerValue = infoBox.ownText();
-                if (innerValue.equalsIgnoreCase(innerSourceString))
+                if (innerValue.equalsIgnoreCase(INNER_SOURCE_STRING))
                 {
                     liveChartObject.setSource(infoBox.child(0).ownText());
                     break;
@@ -143,68 +152,4 @@ public class ChartScraper
         }
     }
 
-    public static class LiveChartObject
-    {
-        String id;
-        String name;
-        String link;
-        String studio;
-        String source;
-
-        public String getSource()
-        {
-            return source;
-        }
-
-        public void setSource(String source)
-        {
-            this.source = source;
-        }
-
-        public String getId()
-        {
-            return id;
-        }
-
-        public void setId(String id)
-        {
-            this.id = id;
-        }
-
-        public String getName()
-        {
-            return name;
-        }
-
-        public void setName(String name)
-        {
-            this.name = name;
-        }
-
-        public String getLink()
-        {
-            return link;
-        }
-
-        public void setLink(String link)
-        {
-            this.link = link;
-        }
-
-        public String getStudio()
-        {
-            return studio;
-        }
-
-        public void setStudio(String studio)
-        {
-            this.studio = studio;
-        }
-
-        public String getLoggingData()
-        {
-            return String.format("LogData:\nID: %s\nName: %s\nSource: %s\nStudio: %s\nLink: %s\n",
-                    getId(), getName(), getSource(), getStudio(), getLink());
-        }
-    }
 }
