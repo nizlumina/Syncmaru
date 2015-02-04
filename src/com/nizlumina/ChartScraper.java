@@ -8,6 +8,8 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChartScraper
 {
@@ -37,8 +39,9 @@ public class ChartScraper
         }
     }
 
-    private void process(Document document)
+    private List<LiveChartObject> process(Document document)
     {
+        List<LiveChartObject> output = new ArrayList<LiveChartObject>();
         Season currSeason = Season.getSeason(document.title());
         System.out.print("Current season: " + currSeason.name());
 
@@ -49,7 +52,7 @@ public class ChartScraper
         int index = 0;
         for (Element card : cardElements)
         {
-            ScrapeObject object = new ScrapeObject();
+            LiveChartObject liveChartObject = new LiveChartObject();
 
             //Get MAL
             Elements malClassRaws = card.getElementsByClass(innerMal);
@@ -61,22 +64,22 @@ public class ChartScraper
                     System.out.println("\nCard index: " + index++);
                 System.out.println(malLink);
 
-                object.setLink(malLink);
-                object.setId(parseMALId(malLink));
+                liveChartObject.setLink(malLink);
+                liveChartObject.setId(parseMALId(malLink));
             }
 
             //Get title (though title in the database will still follow Hummingbird/MAL)
             Elements cardTitleRaws = card.getElementsByClass(innerTitle);
             for (Element cardTitleRaw : cardTitleRaws)
             {
-                object.setName(cardTitleRaw.child(0).ownText());
+                liveChartObject.setName(cardTitleRaw.child(0).ownText());
             }
 
             //Get studio
             Elements cardStudioRaws = card.getElementsByClass(innerStudio);
             for (Element cardStudio : cardStudioRaws)
             {
-                object.setStudio(cardStudio.child(0).ownText());
+                liveChartObject.setStudio(cardStudio.child(0).ownText());
             }
 
             //Get source type
@@ -86,13 +89,16 @@ public class ChartScraper
                 String innerValue = infoBox.ownText();
                 if (innerValue.equalsIgnoreCase(innerSourceString))
                 {
-                    object.setSource(infoBox.child(0).ownText());
+                    liveChartObject.setSource(infoBox.child(0).ownText());
                     break;
                 }
             }
 
-            if (logging) System.out.println("\n" + object.getLoggingData());
+            if (logging) System.out.println("\n" + liveChartObject.getLoggingData());
+
+            output.add(liveChartObject);
         }
+        return output;
     }
 
     public String parseMALId(final String urlString)
@@ -137,7 +143,7 @@ public class ChartScraper
         }
     }
 
-    public static class ScrapeObject
+    public static class LiveChartObject
     {
         String id;
         String name;
