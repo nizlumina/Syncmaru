@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<div class="card ng-scope" highlighter="" highlight="a.highlight + hlvalue" id="i20785"
+     ng-class="{slideInfo: slideId == a.anime.id}">
+    <div class="genFilter ng-binding">Action Ecchi Romance School Harem Supernatural</div>
+    <div class="card__count ng-binding" ng-show="a.anime.airing.countdown">
+        Ep 6 -
+        <timer interval="1000" countdown="a.anime.airing.countdown - chartTime"
+               class="ng-isolate-scope ng-binding"><span ng-show="days != 0"
+                                                         class="ng-scope ng-binding">4d</span> <span
+                ng-show="hours != 24 &amp;&amp; hours != 0"
+                class="ng-scope ng-binding">5h</span><span class="ng-scope ng-binding"> 53m</span>
+        </timer>
+    </div>
+    <a class="thumb-link" href="http://myanimelist.net/anime/25397/AbsoluteDuo" target="_blank">
+        <div class="thumb"
+             style="background-image:url('http://anilist.co/img/dir/anime/reg/20785-GbXysHDJPSzA.jpg');"></div>
+    </a>
+
+    <div class="card__moreBtn" ng-click="infoSlide(a.anime.id)">
+        More Info
+    </div>
+    <div class="card__moreBtn--hide" ng-click="infoSlide(0)">
+        <i class="fa fa-angle-right"></i>
+    </div>
+    <div class="card__title"><a href="http://myanimelist.net/anime/25397/AbsoluteDuo"
+                                target="_blank" ng-bind-html="a.anime[animeTitle]"
+                                class="ng-binding">Absolute Duo</a></div>
+    <div class="card__default">
+        <div class="card__studio">
+            <a ng-href="http://www.animenewsnetwork.co.uk/encyclopedia/company.php?id=8071"
+               target="_blank" class="ng-binding"
+               href="http://www.animenewsnetwork.co.uk/encyclopedia/company.php?id=8071">
+                8bit
+            </a>
+        </div>
+        <div ng-class="hoverScroll" hover-intent="hoverScroll = 'des--scroll'"
+             ng-mouseleave="hoverScroll = ''" ng-bind-html="a.anime.des" class="des ng-binding"
+             resize-des="" style="height: 190px;">The story begins with Blaze — a weapon that is the
+            manifestation of a human's soul. Tooru Kokonoe happens to be qualified for this, but for
+            some reason his Blaze is not a weapon, but a shield. Moreover, he enrolled in a school
+            that teaches combat skills, and thanks to the school's Duo partner system, he ends up
+            living with a beautiful silver-haired girl.<br>
+            <br>
+            (Source: ANN)
+        </div>
+        <div class="card__gen" ng-show="a.anime.genre1"><span ng-show="a.anime.genre1"
+                                                              class="ng-binding">Action</span><span
+                ng-show="a.anime.genre2" class="ng-binding">, Ecchi</span><span
+                ng-show="a.anime.genre3" class="ng-binding">, Romance</span><span
+                ng-show="a.anime.genre4" class="ng-binding">, School</span><span
+                ng-show="a.anime.genre5" class="ng-binding">, Harem</span><span
+                ng-show="a.anime.genre6" class="ng-binding">, Supernatural</span></div>
+        <div class="highlighter">
+						<span>
+							<div class="highlighter__green"
+                                 ng-click="a.highlight = 'green'; hlvalue = hlvalue + 1"></div>
+							<div class="highlighter__yellow"
+                                 ng-click="a.highlight = 'yellow'; hlvalue = hlvalue + 1"></div>
+							<div class="highlighter__red"
+                                 ng-click="a.highlight =  'red'; hlvalue = hlvalue + 1"></div>
+						</span>
+            <i class="fa fa-pencil"></i>
+        </div>
+
+    </div>
+    <div class="card__more">
+        <div class="info_box">
+            Source
+            <p class="ng-binding">Light Novel</p>
+        </div>
+        <div class="info_box">
+            Director
+            <p class="ng-binding">Atsushi Nakayama</p>
+        </div>
+        <div class="info_box">
+            Series Comp
+            <p class="ng-binding">Takamitsu Kouno</p>
+        </div>
+        <div class="info_box">
+            Char Design
+            <p class="ng-binding">Yuu Asaba</p>
+        </div>
+        <div class="info_box">
+            Music
+            <p class="ng-binding"></p>
+        </div>
+        <div class="info_box">
+            Episodes
+            <p class="ep ng-binding ng-hide" ng-show="a.anime.episodes">0</p>
+        </div>
+        <div class="info_nobox">
+            <span ng-show="a.anime.start_date"
+                  class="ng-binding">Premiere Date: Jan 4, 2015 <br></span>
+            <span ng-show="a.anime.hashtag" class=""> Twitter: <a
+                    href="https://twitter.com/search?q=%23abso_duo&amp;src=typd" target="_blank"
+                    class="ng-binding">#abso_duo</a> <br></span>
+            <a href="https://www.youtube.com/watch?v=" target="_blank" ng-show="a.yt_id"
+               class="ng-hide">PV</a>
+            <!-- ngRepeat: l in a.links -->
+            <div ng-repeat-start="l in a.links" class="ng-scope"></div>
+            <a ng-href="http://www.absoluteduo.com/" target="_blank" class="ng-scope ng-binding"
+               href="http://www.absoluteduo.com/">Official Site</a>
+
+            <div ng-repeat-end="" class="ng-scope"></div>
+            <!-- end ngRepeat: l in a.links -->
+            <div ng-repeat-start="l in a.links" class="ng-scope"></div>
+            <a ng-href="http://www.crunchyroll.com/absoluteduo" target="_blank"
+               class="ng-scope ng-binding"
+               href="http://www.crunchyroll.com/absoluteduo">Crunchyroll</a>
+
+            <div ng-repeat-end="" class="ng-scope"></div>
+            <!-- end ngRepeat: l in a.links -->
+        </div>
+    </div>
+</div>
+</body>
+</html>
