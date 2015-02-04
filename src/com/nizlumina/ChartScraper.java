@@ -37,37 +37,6 @@ public class ChartScraper
         }
     }
 
-    public void scrapeDataOnline()
-    {
-        final WebUnit unit = new WebUnit();
-
-        try
-        {
-            unit.enqueueGetString(endpoint, new WebUnit.WebUnitStringListener()
-            {
-                @Override
-                public void onFailure()
-                {
-
-                }
-
-                @Override
-                public void onFinish(String responseBody)
-                {
-
-                    if (responseBody != null)
-                    {
-                        process(Jsoup.parse(responseBody));
-                    }
-                }
-            });
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     private void process(Document document)
     {
         Season currSeason = Season.getSeason(document.title());
