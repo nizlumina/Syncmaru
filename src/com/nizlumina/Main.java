@@ -1,8 +1,18 @@
 package com.nizlumina;
 
-public class Main {
+import java.io.File;
 
-    public static void main(String[] args) {
-	// write your code here
+public class Main
+{
+    //Full chart can be obtained via Chrome element inspection
+    private static final String filePath = "raw/sample_livechart.html";
+
+    public static void main(String[] args)
+    {
+        ChartScraper scraper = new ChartScraper();
+        scraper.setLogging(true);
+        File htmlFile = new File(filePath);
+        if (htmlFile.exists()) scraper.scrapeData(htmlFile);
+        else System.out.print("File not found");
     }
 }
