@@ -278,7 +278,7 @@ public class SyncmaruProcessor
         // /year/season
         try
         {
-            IOUtils.write(jsonString, new FileOutputStream(new File(mSeason.name() + mYear + ".json")));
+            IOUtils.write(jsonString, new FileOutputStream(new File("OUTPUT_" + mSeason.name() + mYear + ".json")));
             String saved = mCompositeDatas.size() + " objects saved!";
             log(saved);
         }
