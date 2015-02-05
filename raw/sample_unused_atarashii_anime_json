@@ -1,0 +1,57 @@
+{
+  "id": 13601,
+  "title": "Psycho-Pass",
+  "other_titles": {
+    "synonyms": ["Psychopath"],
+    "japanese": ["\u30b5\u30a4\u30b3\u30d1\u30b9"]
+  },
+  "rank": 72,
+  "popularity_rank": 40,
+  "image_url": "http:\/\/cdn.myanimelist.net\/images\/anime\/2\/41995.jpg",
+  "type": "TV",
+  "episodes": 22,
+  "status": "finished airing",
+  "start_date": "Fri Oct 12 12:00:00 -0700 2012",
+  "end_date": "Fri Mar 22 12:00:00 -0700 2013",
+  "classification": "R - 17+ (violence & profanity)",
+  "members_score": 8.59,
+  "members_count": 237650,
+  "favorited_count": 8697,
+  "synopsis": "The series takes place in the near future, when it is possible to instantaneously measure and quantify a person's state of mind and personality. This information is recorded and processed, and the term \"Psycho-Pass\" refers to a standard used to measure an individual's being. The story centers around the \"enforcement officer\" Shinya Kougami, who is tasked with managing crime in such a world. <br><br>\r\nIn the future, it is possible to quantitatively measure a person's emotions, desires, and every inclination. In this way, it is also possible to measure a person's criminal tendency factor, which is used to judge criminals. <br><br>\r\nThis is the story of a team of policemen dedicated to maintaining public order. Some of them work in the Enforcement Division, responsible for the apprehension of criminals, while others belong to the Supervisory Division which oversees their colleagues in Enforcement. <br><br>\r\n(Source: translated and adapted from official site by Cranston) ",
+  "genres": [
+    "Action",
+    "Sci-Fi",
+    "Police"
+  ],
+  "tags": [],
+  "manga_adaptations": [
+    {
+      "manga_id": "44933",
+      "title": "Kanshikan Tsunemori Akane",
+      "url": "http:\/\/myanimelist.net\/manga\/44933\/Kanshikan_Tsunemori_Akane"
+    },
+    {
+      "manga_id": "69371",
+      "title": "Psycho-Pass",
+      "url": "http:\/\/myanimelist.net\/manga\/69371\/Psycho-Pass"
+    }
+  ],
+  "prequels": [],
+  "sequels": [
+    {
+      "anime_id": "23281",
+      "title": "Psycho-Pass 2",
+      "url": "http:\/\/myanimelist.net\/anime\/23281\/Psycho-Pass_2"
+    }
+  ],
+  "side_stories": [],
+  "parent_story": null,
+  "character_anime": [],
+  "spin_offs": [],
+  "summaries": [],
+  "alternative_versions": [],
+  "watched_status": null,
+  "watched_episodes": 0,
+  "score": null,
+  "listed_anime_id": null
+}

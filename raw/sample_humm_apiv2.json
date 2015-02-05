@@ -1,0 +1,127 @@
+{
+  "anime": {
+    "id": 7000,
+    "titles": {
+      "canonical": "Psycho-Pass",
+      "english": "",
+      "romaji": "Psycho-Pass",
+      "japanese": "PSYCHO-PASS サイコパス"
+    },
+    "slug": "psycho-pass",
+    "synopsis": "The series takes place in the near future, when it is possible to instantaneously measure and quantify a person's state of mind and personality. This information is recorded and processed, and the term \"Psycho-Pass\" refers to a standard used to measure an individual's being. The story centers around the \"enforcement officer\" Shinya Kougami, who is tasked with managing crime in such a world. \r\nIn the future, it is possible to quantitatively measure a person's emotions, desires, and every inclination. In this way, it is also possible to measure a person's criminal tendency factor, which is used to judge criminals. \r\nThis is the story of a team of policemen dedicated to maintaining public order. Some of them work in the Enforcement Division, responsible for the apprehension of criminals, while others belong to the Supervisory Division which oversees their colleagues in Enforcement. \r\n(Source: translated and adapted from official site by Cranston) ",
+    "started_airing_date": "2012-10-12",
+    "finished_airing_date": "2013-03-22",
+    "youtube_video_id": "45p33SSWMJw",
+    "age_rating": "R17+",
+    "episode_count": 22,
+    "episode_length": 23,
+    "show_type": "TV",
+    "poster_image": "https://static.hummingbird.me/anime/poster_images/000/007/000/large/ibn1YAUNCr0I4g.jpg?1416541456",
+    "cover_image": "https://static.hummingbird.me/anime/cover_images/000/007/000/thumb/qirw5iD.jpg?1416542585",
+    "community_rating": 4.31426172371331,
+    "genres": [
+      "Action",
+      "Sci-Fi",
+      "Police",
+      "Thriller"
+    ],
+    "producers": [
+      "Production I.G",
+      "FUNimation Entertainment",
+      "Fuji TV",
+      "Nitroplus",
+      "Sony Music Entertainment"
+    ],
+    "bayesian_rating": 4.31426172371331,
+    "links": {
+      "gallery_images": [
+        897,
+        898,
+        899,
+        895
+      ],
+      "episodes": [
+        100733,
+        100732,
+        100731,
+        100730,
+        100729,
+        100728,
+        100727,
+        100725,
+        100724,
+        100723,
+        100722,
+        100721,
+        100720,
+        100719,
+        100718,
+        100717,
+        100716,
+        100715,
+        100713,
+        100712,
+        100714,
+        100726
+      ]
+    }
+  },
+  "linked": {
+    "gallery_images": [
+      {
+        "id": 897,
+        "thumb": "https://static.hummingbird.me/gallery_images/images/000/000/897/thumb/897.jpg?1375598683",
+        "original": "https://static.hummingbird.me/gallery_images/images/000/000/897/original/897.jpg?1375598683"
+      },
+      {
+        "id": 898,
+        "thumb": "https://static.hummingbird.me/gallery_images/images/000/000/898/thumb/898.jpg?1375598684",
+        "original": "https://static.hummingbird.me/gallery_images/images/000/000/898/original/898.jpg?1375598684"
+      },
+      {
+        "id": 899,
+        "thumb": "https://static.hummingbird.me/gallery_images/images/000/000/899/thumb/899.png?1375598685",
+        "original": "https://static.hummingbird.me/gallery_images/images/000/000/899/original/899.png?1375598685"
+      },
+      {
+        "id": 895,
+        "thumb": "https://static.hummingbird.me/gallery_images/images/000/000/895/thumb/895.jpg?1375598681",
+        "original": "https://static.hummingbird.me/gallery_images/images/000/000/895/original/895.jpg?1375598681"
+      }
+    ],
+    "episodes": [
+      {
+        "id": 100733,
+        "title": "Perfect World",
+        "synopsis": "Kogami and Makishima fight against each other, with Kogami managing to land a hit, but their fight is broken up when Akane arrives on the scene. Instead of arresting Kogami, Akane gives her the modified Dominator so they can both pursue Makishima. Makishima attempts to escape via truck, but Akane manages to get onto it and burst its tire, causing it to crash. With Akane to injured to fight, Kogami takes a reloaded revolver and pursues Makishima as he tries to escape. Reaching the end of his road, Makishima simply waits as Kogami finally shoots him, with Akane unable to do anything about it. Afterwards, the Sybil System tells Akane of how they intend to make itself public at a time where the public will come to accept it, though Akane responds that there will come a day when humans stand up against them. Two months later, Ginoza becomes an Enforcer whilst Mika Shimotsuki, one of the girls from the statue incident, joins the MWPSB as a detective under Akane's wing, whilst Kogami is seen elsewhere. ",
+        "airdate": "2013-03-22",
+        "number": 22,
+        "season_number": 1
+      },
+      {
+        "id": 100732,
+        "title": "Blood-stained Reward",
+        "synopsis": "As Makishima works on reprogramming the virus, both Kogami and the MWPSB arrive at the factory, with Kogami instructing Akane that they need to shut down power to the facility to bypass the security. Prior to arriving, Akane manages to convince the Sibyl System to keep her Dominator on Paralyzer mode with the safety unlocked regardless of Crime Coefficient to use as a trump card against Makishima and Kogami. After the power is shut down, Kogami sneaks into the facility whilst Akane and Yayoi head to the control room in case Makishima attempts to activate the emergency power. Finding the control room empty, Akane comes to realise that Ginoza and Masaoka are in danger. As Ginoza becomes trapped under a container after tripping up a trap, Masaoka comes face to face with Makishima. Although Masaoka appears to get the upper hand, Makishima threatens to blow Ginoza up with a stick of dynamite, with Masaoka ultimately sacrificing himself to save his son. As Ginoza remains horrified by his father's death, Kogami pursues Makishima and prepares to engage in a knife fight with him. ",
+        "airdate": "2013-03-15",
+        "number": 21,
+        "season_number": 1
+      },
+      {
+        "id": 100731,
+        "title": "Where Justice is Found",
+        "synopsis": "The Sibyl System reveals itself to Akane and notes that she understands the necessity of the system, if not its justifiability. Makishima finds the professor who is responsible for the hyper-oats and murders him after finding the information he seeks, taking along the man's fingers and eyeballs as a measure against biometric security. Kogami arrives on the scene not long after and leaves a clue for the MWSPB in the man's airpipe. Meanwhile, Akane makes a deal with Sibyl: if the System withdraws the execution order for Kogami, she will capture Makishima alive. Thanks to her detective work, they quickly find Kogami's clue and understand what Makishima's up to. ",
+        "airdate": "2013-03-08",
+        "number": 20,
+        "season_number": 1
+      },
+      {
+        "id": 100730,
+        "title": "Transparent Shadows",
+        "synopsis": "Ginoza, whose Hue is now problematic, eschews intensive therapy in order to work on retrieving Kogami and Makishima. He argues with Masaoka over his \"softness,\" and declares his intention to see his \"obsession\" through to the end. Kogami, meanwhile, goes to visit Saiga in order to figure out Makishima's next move; the two surmise that Makishima might attempt to meddle with Japan's food supply in order to force open borders for the country. Shion does her best to comfort Akane and Kasei connects with Sibyl to determine their new \"pawn.\" Later, a Dominator-bearing drone comes to visit Akane in the office - and declares that it will tell her the truth about everything. ",
+        "airdate": "2013-03-01",
+        "number": 19,
+        "season_number": 1
+      }
+    ]
+  }
+}
