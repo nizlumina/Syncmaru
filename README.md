@@ -1,5 +1,5 @@
 # Syncmaru
-Internal console application for syncing LiveChart.me card object to a composite data model (MAL, Hummingbird) and then uploaded to Firebase. 
+Internal Java console application for syncing LiveChart.me card object to a composite data model (MAL, Hummingbird) and then uploaded to Firebase. 
 
 Feel free to look over the code. 
 
