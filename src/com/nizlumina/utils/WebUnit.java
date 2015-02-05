@@ -14,6 +14,7 @@ package com.nizlumina.utils;
 
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -21,12 +22,15 @@ import com.squareup.okhttp.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Internal singleton master for all WebUnit requests.
  */
 final class WebUnitMaster
 {
+    private static final String cacheLocation = "cache";
     private static volatile WebUnitMaster INSTANCE = null;
     private final OkHttpClient mainClient;
     private Cache mCache;
@@ -37,7 +41,7 @@ final class WebUnitMaster
         int cacheSize = 10 * 1024 * 1024; //10 MB
         try
         {
-            mCache = new Cache(new File("cache"), cacheSize);
+            mCache = new Cache(new File(cacheLocation), cacheSize);
             mainClient.setCache(mCache);
         }
         catch (IOException e)
@@ -83,8 +87,9 @@ final class WebUnitMaster
 public class WebUnit
 {
     private static final String userAgentKey = "User-Agent";
-    private static final String userAgent = "minori-android";
+    private static final String userAgent = "OkHttp";
     private final OkHttpClient mClient;
+    private Map<String, String> mHeaders = new HashMap<String, String>(0);
     private String mUserAgent;
 
     public WebUnit()
@@ -95,6 +100,18 @@ public class WebUnit
     public void setUserAgent(String mUserAgent)
     {
         this.mUserAgent = mUserAgent;
+    }
+
+    public void setCredentials(String user, String password)
+    {
+        String credentials = Credentials.basic(user, password);
+        System.out.print("Authorization: " + credentials);
+        mHeaders.put("Authorization", credentials);
+    }
+
+    public void addHeaders(String key, String value)
+    {
+        mHeaders.put(key, value);
     }
 
     public OkHttpClient getClient()
@@ -151,9 +168,17 @@ public class WebUnit
         String agent;
         if (mUserAgent != null) agent = mUserAgent;
         else agent = userAgent;
-        return new Request.Builder()
+
+        Request.Builder requestBuilder = new Request.Builder()
                 .url(url)
-                .addHeader(userAgentKey, agent).build();
+                .addHeader(userAgentKey, agent);
+
+        for (Map.Entry<String, String> header : mHeaders.entrySet())
+        {
+            requestBuilder.addHeader(header.getKey(), header.getValue());
+        }
+
+        return requestBuilder.build();
     }
 
     /**
