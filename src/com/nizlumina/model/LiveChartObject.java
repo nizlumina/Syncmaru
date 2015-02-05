@@ -60,7 +60,7 @@ public class LiveChartObject
 
     public String getLoggingData()
     {
-        return String.format("LogData:\nID: %s\nName: %s\nSource: %s\nStudio: %s\nLink: %s\n",
+        return String.format("Chart Data:\nID: %s\nName: %s\nSource: %s\nStudio: %s\nLink: %s\n",
                 getId(), getName(), getSource(), getStudio(), getLink());
     }
 }
