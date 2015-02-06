@@ -10,6 +10,7 @@ import com.squareup.okhttp.Response;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 //Simple class for FireBase CRUD tasks
@@ -25,7 +26,7 @@ public class FirebasePush
     public boolean push(String httpMethod, String jsonPayload)
     {
         WebUnit webUnit = new WebUnit();
-        Call task = createTask(httpMethod, jsonPayload, webUnit);
+        Call task = createTask(httpMethod, jsonPayload, webUnit, mEndPoint);
         try
         {
             Response response = task.execute();
@@ -39,10 +40,11 @@ public class FirebasePush
         return false;
     }
 
-    private Call createTask(String httpMethod, String jsonPayload, WebUnit webUnit)
+    private Call createTask(String httpMethod, String jsonPayload, WebUnit webUnit, String url)
     {
         return webUnit.getClient().newCall(
                 new Request.Builder()
+                        .url(url)
                         .method(httpMethod,
                                 RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonPayload))
                         .build());
@@ -52,13 +54,13 @@ public class FirebasePush
     {
         private static final String authParam = "auth";
         private URIBuilder mUriBuilder;
-
+        private String mSecretkey;
         public Builder(String secretKey, String endpoint)
         {
             try
             {
+                mSecretkey = secretKey;
                 mUriBuilder = new URIBuilder(endpoint);
-                mUriBuilder.addParameter(authParam, secretKey);
             }
             catch (URISyntaxException e)
             {
@@ -71,6 +73,19 @@ public class FirebasePush
             return new Builder(secretKey, endpoint);
         }
 
+        public String getSamplePath()
+        {
+            try
+            {
+                return mUriBuilder.build().toString();
+            }
+            catch (URISyntaxException e)
+            {
+                e.printStackTrace();
+            }
+            return "PATH FAILED TO PARSE";
+        }
+
         public Builder appendQueryParams(String param, String value)
         {
             mUriBuilder.addParameter(param, value);
@@ -81,7 +96,7 @@ public class FirebasePush
         {
             try
             {
-                mUriBuilder = new URIBuilder(mUriBuilder + java.io.File.separator + path.replaceFirst("\\W+", ""));
+                mUriBuilder = new URIBuilder(mUriBuilder.build().toString() + path);
             }
             catch (URISyntaxException e)
             {
@@ -91,19 +106,26 @@ public class FirebasePush
         }
 
         /**
-         * This will automatically append '.json' at the endpoint
-         *
+         * Build the the push object
          * @return A FirebasePush object ready to be pushed. Return null on failure.
          */
         public FirebasePush build()
         {
             try
             {
-                this.appendPath(".json");
-                String finalEndpoint = mUriBuilder.build().toString();
+                appendPath(".json");
+                mUriBuilder.addParameter(authParam, mSecretkey);
+
+
+                String finalEndpoint = mUriBuilder.build().toURL().toString();
+                System.out.print(finalEndpoint);
                 return new FirebasePush(finalEndpoint, true);
             }
             catch (URISyntaxException e)
+            {
+                e.printStackTrace();
+            }
+            catch (MalformedURLException e)
             {
                 e.printStackTrace();
             }
