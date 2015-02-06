@@ -64,7 +64,6 @@ public class SyncmaruProcessor
         processLiveChartObject();
         processHummingbirdData();
         saveLocal();
-        uploadToFireBase();
     }
 
     private void processLiveChartObject()
@@ -278,7 +277,7 @@ public class SyncmaruProcessor
         // /year/season
         try
         {
-            IOUtils.write(jsonString, new FileOutputStream(new File("OUTPUT_" + mSeason.name() + mYear + ".json")));
+            IOUtils.write(jsonString, new FileOutputStream(new File("jsonpayloads/OUTPUT_" + mSeason.name() + mYear + ".json")));
             String saved = mCompositeDatas.size() + " objects saved!";
             log(saved);
         }
@@ -286,11 +285,6 @@ public class SyncmaruProcessor
         {
             e.printStackTrace();
         }
-    }
-
-    private void uploadToFireBase()
-    {
-
     }
 
     private void log(String logString)
