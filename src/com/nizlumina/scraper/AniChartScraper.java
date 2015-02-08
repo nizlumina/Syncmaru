@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChartScraper
+public class AniChartScraper
 {
     //We only run this once a month. Promise.
     private static final String ENDPOINT = "https://livechart.me/";

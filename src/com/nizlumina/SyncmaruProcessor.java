@@ -9,7 +9,7 @@ import com.nizlumina.model.AniChartObject;
 import com.nizlumina.model.CompositeData;
 import com.nizlumina.model.MALObject;
 import com.nizlumina.model.hummingbird.v2.AnimeObject;
-import com.nizlumina.scraper.ChartScraper;
+import com.nizlumina.scraper.AniChartScraper;
 import com.nizlumina.utils.WebUnit;
 
 import org.apache.commons.io.IOUtils;
@@ -31,14 +31,14 @@ public class SyncmaruProcessor
     private final List<AniChartObject> mAniChartObjects;
     private final Map<AniChartObject, MALObject> mMalChartObjectsResult;
     private final List<CompositeData> mCompositeDatas;
-    private final ChartScraper.Season mSeason;
+    private final AniChartScraper.Season mSeason;
     private final int mYear;
     int iLimit = 0;
     private boolean logging = true;
     private int debugLimit = 1;
     private List<AniChartObject> mFailures;
 
-    public SyncmaruProcessor(List<AniChartObject> aniChartObjects, ChartScraper.Season season, int year)
+    public SyncmaruProcessor(List<AniChartObject> aniChartObjects, AniChartScraper.Season season, int year)
     {
         mAniChartObjects = aniChartObjects;
         mYear = year;

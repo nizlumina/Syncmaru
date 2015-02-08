@@ -1,4 +1,4 @@
-package com.nizlumina.factory;
+package com.nizlumina.model;
 
 import com.nizlumina.utils.WebUnit;
 import com.squareup.okhttp.Call;

@@ -1,8 +1,8 @@
 package com.nizlumina;
 
-import com.nizlumina.factory.FirebasePush;
 import com.nizlumina.model.AniChartObject;
-import com.nizlumina.scraper.ChartScraper;
+import com.nizlumina.model.FirebasePush;
+import com.nizlumina.scraper.AniChartScraper;
 
 import org.apache.commons.io.IOUtils;
 
@@ -57,7 +57,7 @@ public class Syncmaru
 
                 if (htmlFile.exists())
                 {
-                    ChartScraper scraper = new ChartScraper();
+                    AniChartScraper scraper = new AniChartScraper();
                     scraper.setLogging(false);
                     List<AniChartObject> results = scraper.scrapeData(htmlFile);
 
