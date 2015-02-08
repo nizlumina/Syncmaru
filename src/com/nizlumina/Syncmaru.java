@@ -1,7 +1,7 @@
 package com.nizlumina;
 
 import com.nizlumina.factory.FirebasePush;
-import com.nizlumina.model.LiveChartObject;
+import com.nizlumina.model.AniChartObject;
 import com.nizlumina.scraper.ChartScraper;
 
 import org.apache.commons.io.IOUtils;
@@ -59,9 +59,9 @@ public class Syncmaru
                 {
                     ChartScraper scraper = new ChartScraper();
                     scraper.setLogging(false);
-                    List<LiveChartObject> results = scraper.scrapeData(htmlFile);
+                    List<AniChartObject> results = scraper.scrapeData(htmlFile);
 
-                    for (LiveChartObject result : results)
+                    for (AniChartObject result : results)
                     {
                         log(result.getLoggingData());
                     }

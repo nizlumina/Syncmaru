@@ -1,6 +1,6 @@
 package com.nizlumina.factory;
 
-import com.nizlumina.model.LiveChartObject;
+import com.nizlumina.model.AniChartObject;
 import com.sun.javafx.beans.annotations.NonNull;
 
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
  */
 public class MatchingFactory
 {
-    public static void matchToHummingbird(@NonNull List<LiveChartObject> chartObjects)
+    public static void matchToHummingbird(@NonNull List<AniChartObject> chartObjects)
     {
-        for (LiveChartObject chartObject : chartObjects)
+        for (AniChartObject chartObject : chartObjects)
         {
             String malID = chartObject.getId();
         }

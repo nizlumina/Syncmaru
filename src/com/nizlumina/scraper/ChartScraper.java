@@ -1,6 +1,6 @@
 package com.nizlumina.scraper;
 
-import com.nizlumina.model.LiveChartObject;
+import com.nizlumina.model.AniChartObject;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -35,7 +35,7 @@ public class ChartScraper
         logging = enabled;
     }
 
-    public List<LiveChartObject> scrapeData(File htmlFile)
+    public List<AniChartObject> scrapeData(File htmlFile)
     {
         try
         {
@@ -48,9 +48,9 @@ public class ChartScraper
         return null;
     }
 
-    private List<LiveChartObject> process(Document document)
+    private List<AniChartObject> process(Document document)
     {
-        List<LiveChartObject> output = new ArrayList<LiveChartObject>();
+        List<AniChartObject> output = new ArrayList<AniChartObject>();
         mScrapedSeason = Season.getSeason(document.title());
         System.out.print("Current season: " + mScrapedSeason.name());
 
@@ -61,7 +61,7 @@ public class ChartScraper
         int index = 0;
         for (Element card : cardElements)
         {
-            LiveChartObject liveChartObject = new LiveChartObject();
+            AniChartObject aniChartObject = new AniChartObject();
 
             //Get MAL
             Elements malClassRaws = card.getElementsByClass(INNER_MAL);
@@ -73,22 +73,22 @@ public class ChartScraper
                     System.out.println("\nCard index: " + index++);
                 System.out.println(malLink);
 
-                liveChartObject.setLink(malLink);
-                liveChartObject.setId(parseMALId(malLink));
+                aniChartObject.setLink(malLink);
+                aniChartObject.setId(parseMALId(malLink));
             }
 
             //Get title (though title in the database will still follow Hummingbird/MAL)
             Elements cardTitleRaws = card.getElementsByClass(INNER_TITLE);
             for (Element cardTitleRaw : cardTitleRaws)
             {
-                liveChartObject.setName(cardTitleRaw.child(0).ownText());
+                aniChartObject.setName(cardTitleRaw.child(0).ownText());
             }
 
             //Get studio
             Elements cardStudioRaws = card.getElementsByClass(INNER_STUDIO);
             for (Element cardStudio : cardStudioRaws)
             {
-                liveChartObject.setStudio(cardStudio.child(0).ownText());
+                aniChartObject.setStudio(cardStudio.child(0).ownText());
             }
 
             //Get source type
@@ -98,14 +98,14 @@ public class ChartScraper
                 String innerValue = infoBox.ownText();
                 if (innerValue.equalsIgnoreCase(INNER_SOURCE_STRING))
                 {
-                    liveChartObject.setSource(infoBox.child(0).ownText());
+                    aniChartObject.setSource(infoBox.child(0).ownText());
                     break;
                 }
             }
 
-            if (logging) System.out.println("\n" + liveChartObject.getLoggingData());
+            if (logging) System.out.println("\n" + aniChartObject.getLoggingData());
 
-            output.add(liveChartObject);
+            output.add(aniChartObject);
         }
         return output;
     }

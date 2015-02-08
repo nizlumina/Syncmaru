@@ -1,6 +1,6 @@
 package com.nizlumina.model;
 
-public class LiveChartObject
+public class AniChartObject
 {
     String id;
     String name;
