@@ -25,7 +25,6 @@ public class Syncmaru
     public static final String HUMMINGBIRD_USERAGENT = Config.HUMMINGBIRD_USERAGENT;
 
     //Full chart can be obtained via Chrome element inspection
-    private static final String filePath = "raw/sample_livechart.html";
 
     public static void main(String[] args) throws IOException
     {
@@ -38,7 +37,23 @@ public class Syncmaru
 
             if (firstInput.equalsIgnoreCase("P"))
             {
-                File htmlFile = new File(filePath);
+                log("Select input file:");
+                File[] inputs = new File("input").listFiles();
+                if (inputs != null)
+                {
+                    int i = 0;
+                    for (File file : inputs)
+                    {
+                        log("[" + i++ + "]" + file.getName());
+                    }
+                }
+
+                int intInput = scanner.nextInt();
+                log(intInput + " chosen");
+
+
+                assert inputs != null;
+                File htmlFile = inputs[intInput];
 
                 if (htmlFile.exists())
                 {
