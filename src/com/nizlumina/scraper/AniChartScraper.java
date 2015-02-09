@@ -16,7 +16,7 @@ import java.util.List;
 public class AniChartScraper
 {
     //We only run this once a month. Promise.
-    private static final String ENDPOINT = "https://livechart.me/";
+    private static final String ENDPOINT = "https://anichart.net/";
     private static final String OBJECT_SELECTOR = ".card.ng-scope";
     private static final String INNER_MAL = "thumb-link";
     private static final String INNER_TITLE = "card__title";
