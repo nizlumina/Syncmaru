@@ -32,7 +32,7 @@ public class Syncmaru
         while (!quit)
         {
             Scanner scanner = new Scanner(System.in);
-            log("Insert input:\nP: Parse LiveChart chart (web)\nU: Skip parsing, and start Firebase jobs");
+            log("Insert input:\nP: Parse LiveChart chart (web)\nU: Start Firebase jobs");
             String firstInput = scanner.nextLine();
 
             if (firstInput.equalsIgnoreCase("P"))
@@ -56,7 +56,7 @@ public class Syncmaru
                 {
                     log("Chosen: " + seasonChosenString);
 
-                    log("\nInput year (minimum 2012):");
+                    log("\nInput year (minimum 2013):");
                     String yearChosen = scanner.nextLine();
 
                     log("Chosen: " + yearChosen);

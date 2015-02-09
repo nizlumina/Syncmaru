@@ -251,7 +251,7 @@ public class SyncmaruProcessor
 
             log("Failed pair:" + liveChartObject.getTitle() + "\n\nMAL:" + malObject.getTitle() + "\nID[" + malObject.getId() + "]");
 
-            log("\n Press S to skip adding to final data or P to proceed with a null Hummingbird object");
+            log("\nPress S to skip adding to final data or P to proceed with a null Hummingbird object");
 
             String readInput = kbInput.nextLine();
             if (readInput.equalsIgnoreCase("S"))
