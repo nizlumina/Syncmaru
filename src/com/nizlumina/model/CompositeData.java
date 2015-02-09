@@ -10,9 +10,9 @@ public class CompositeData
     private int id;
     private MALObject malObject;
     private AnimeObject animeObject;
-    private AniChartObject aniChartObject;
+    private LiveChartObject aniChartObject;
 
-    public CompositeData(int id, MALObject malObject, AnimeObject animeObject, AniChartObject aniChartObject)
+    public CompositeData(int id, MALObject malObject, AnimeObject animeObject, LiveChartObject aniChartObject)
     {
         this.id = id;
         this.malObject = malObject;
@@ -24,12 +24,12 @@ public class CompositeData
     {
     }
 
-    public AniChartObject getAniChartObject()
+    public LiveChartObject getAniChartObject()
     {
         return aniChartObject;
     }
 
-    public void setAniChartObject(AniChartObject aniChartObject)
+    public void setAniChartObject(LiveChartObject aniChartObject)
     {
         this.aniChartObject = aniChartObject;
     }

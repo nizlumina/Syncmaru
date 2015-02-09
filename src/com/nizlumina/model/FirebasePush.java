@@ -55,6 +55,7 @@ public class FirebasePush
         private static final String authParam = "auth";
         private URIBuilder mUriBuilder;
         private String mSecretkey;
+
         public Builder(String secretKey, String endpoint)
         {
             try
@@ -107,6 +108,7 @@ public class FirebasePush
 
         /**
          * Build the the push object
+         *
          * @return A FirebasePush object ready to be pushed. Return null on failure.
          */
         public FirebasePush build()
@@ -118,7 +120,6 @@ public class FirebasePush
 
 
                 String finalEndpoint = mUriBuilder.build().toURL().toString();
-                System.out.print(finalEndpoint);
                 return new FirebasePush(finalEndpoint, true);
             }
             catch (URISyntaxException e)

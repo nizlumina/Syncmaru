@@ -1,8 +1,8 @@
 package com.nizlumina;
 
-import com.nizlumina.model.AniChartObject;
+import com.nizlumina.factory.LiveChartWebFactory;
 import com.nizlumina.model.FirebasePush;
-import com.nizlumina.scraper.AniChartScraper;
+import com.nizlumina.model.LiveChartObject;
 
 import org.apache.commons.io.IOUtils;
 
@@ -32,54 +32,48 @@ public class Syncmaru
         while (!quit)
         {
             Scanner scanner = new Scanner(System.in);
-            log("Insert input:\nP: Parse charts\nU: Skip parsing, and start Firebase jobs");
+            log("Insert input:\nP: Parse LiveChart chart (web)\nU: Skip parsing, and start Firebase jobs");
             String firstInput = scanner.nextLine();
 
             if (firstInput.equalsIgnoreCase("P"))
             {
-                log("Select input file:");
-                File[] inputs = new File("input").listFiles();
-                if (inputs != null)
+                log("Select season:");
+                int i = 0;
+                for (LiveChartWebFactory.Season season : LiveChartWebFactory.Season.values())
                 {
-                    int i = 0;
-                    for (File file : inputs)
-                    {
-                        log("[" + i++ + "]" + file.getName());
-                    }
+                    log(i++ + " - " + season.name());
+                }
+                int seasonChosen = Integer.parseInt(scanner.nextLine());
+
+                String seasonChosenString = null;
+
+                for (LiveChartWebFactory.Season season : LiveChartWebFactory.Season.values())
+                {
+                    if (season.ordinal() == seasonChosen) seasonChosenString = season.toString();
                 }
 
-                int intInput = scanner.nextInt();
-                log(intInput + " chosen");
-
-
-                assert inputs != null;
-                File htmlFile = inputs[intInput];
-
-                if (htmlFile.exists())
+                if (seasonChosenString != null)
                 {
-                    AniChartScraper scraper = new AniChartScraper();
-                    scraper.setLogging(false);
-                    List<AniChartObject> results = scraper.scrapeData(htmlFile);
+                    log("Chosen: " + seasonChosenString);
 
-                    for (AniChartObject result : results)
-                    {
-                        log(result.getLoggingData());
-                    }
+                    log("\nInput year (minimum 2012):");
+                    String yearChosen = scanner.nextLine();
 
-                    log("File have been parsed with result size: " + results.size());
-                    log("\nPress Enter to proceed with Hummingbird matching. This will use any available network and will take sometime to finish");
-                    scanner.nextLine();
-                    scanner.close();
-                    log("Proceeded. Please have a coffee while waiting.");
+                    log("Chosen: " + yearChosen);
 
+
+                    List<LiveChartObject> chartObjects = LiveChartWebFactory.requestChart(LiveChartWebFactory.Season.valueOf(seasonChosenString), yearChosen);
+
+                    log("Results size:" + chartObjects.size());
                     //match with hummingbird
                     //resolve to final data
                     //save to local path
-                    SyncmaruProcessor processor = new SyncmaruProcessor(results, scraper.getScrapedSeason(), 2014);
+                    //SyncmaruProcessor processor = new SyncmaruProcessor(results, scraper.getScrapedSeason(), 2014);
+                    SyncmaruProcessor processor = new SyncmaruProcessor(chartObjects, seasonChosenString, yearChosen);
                     processor.processLinkage();
 
                 }
-                else log("Chart HTML file not found");
+                else log("Chosen season is wrong!");
             }
             if (firstInput.equalsIgnoreCase("U"))
             {
@@ -164,6 +158,7 @@ public class Syncmaru
                     upload = true;
                     log("Input the HTTP method for this task (GET/PUT/DELETE etc.):\n");
                     String httpMethodInput = scanner.nextLine().toUpperCase().trim();
+                    System.out.println("Pushing to endpoint. Please hold tight.");
                     boolean success = builder.build().push(httpMethodInput, selectedJSONPayload);
                     log("\n\nSuccess? " + success);
                 }
