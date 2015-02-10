@@ -5,6 +5,9 @@ Feel free to look over the code.
 
 (You might be interested in checking on how MAL matching is being done since the official API doesn't provide getting objects by ID plus the official search API is prone to timeouts even with legit terms).
 
+## Config
+Make sure to declare your keys/registered user agents for the various services in the main Syncmaru.java (or a separate Config class).
+
 ## Dependencies
 Below are the libraries used for Syncmaru:
 - OkHttp
