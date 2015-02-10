@@ -190,7 +190,7 @@ public class SyncmaruProcessor
 
                 for (MALObject malObject : malObjects)
                 {
-                    log("Comparing[" + malObject.getId() + "] " + malObject.getTitle() + " to [" + id + "]");
+                    log("Comparing[" + malObject.getId() + "] to [" + id + "] " + malObject.getTitle());
                     if (malObject.getId() == id)
                     {
                         mMalChartObjectsResult.put(liveChartObject, malObject);
