@@ -98,45 +98,49 @@ public class SyncmaruProcessor
         for (LiveChartObject liveChartObject : mFailures)
         {
             boolean success = false;
-            int checkID = Integer.parseInt(liveChartObject.getMalID());
-            while (!success)
+            if (liveChartObject.getMalID() != null)
             {
-                log("\n\nFAILED:\n" + liveChartObject.getTitle());
+                int checkID = Integer.parseInt(liveChartObject.getMalID());
 
-                log("\nPlease input the right terms for : " + liveChartObject.getTitle());
-                String keyboardInput = scanner.nextLine();
-
-                log("Correctional searching with [" + keyboardInput + "]");
-
-
-                success = processMalResults(liveChartObject, keyboardInput, MALQueryFactory.Strategy.BY_TERMCOUNTS, 5, checkID);
-
-                if (!success)
+                while (!success)
                 {
-                    log("Failed again. Type S to skip or an ID number from above (to coerce to the found MAL ID) or press anything else to retry:");
-                    String kbInput = scanner.nextLine();
+                    log("\n\nFAILED:\n" + liveChartObject.getTitle());
 
-                    int intInput = -1;
-                    try
-                    {
-                        intInput = Integer.parseInt(kbInput.trim());
-                    }
-                    catch (Exception e)
-                    {
+                    log("\nPlease input the right terms for : " + liveChartObject.getTitle());
+                    String keyboardInput = scanner.nextLine();
 
-                    }
+                    log("Correctional searching with [" + keyboardInput + "]");
 
-                    if (kbInput.equalsIgnoreCase("S"))
-                    {
-                        log(liveChartObject.getMalID() + " skipped");
-                        break;
-                    }
-                    else if (intInput > 0)
-                    {
-                        checkID = intInput;
-                        log("\n\nRetrying with the ID: " + intInput);
 
-                        success = processMalResults(liveChartObject, keyboardInput, MALQueryFactory.Strategy.BY_TERMCOUNTS, 5, checkID);
+                    success = processMalResults(liveChartObject, keyboardInput, MALQueryFactory.Strategy.BY_TERMCOUNTS, 5, checkID);
+
+                    if (!success)
+                    {
+                        log("Failed again. Type S to skip or an ID number from above (to coerce to the found MAL ID) or press anything else to retry:");
+                        String kbInput = scanner.nextLine();
+
+                        int intInput = -1;
+                        try
+                        {
+                            intInput = Integer.parseInt(kbInput.trim());
+                        }
+                        catch (Exception e)
+                        {
+
+                        }
+
+                        if (kbInput.equalsIgnoreCase("S"))
+                        {
+                            log(liveChartObject.getMalID() + " skipped");
+                            break;
+                        }
+                        else if (intInput > 0)
+                        {
+                            checkID = intInput;
+                            log("\n\nRetrying with the ID: " + intInput);
+
+                            success = processMalResults(liveChartObject, keyboardInput, MALQueryFactory.Strategy.BY_TERMCOUNTS, 5, checkID);
+                        }
                     }
                 }
             }
@@ -150,7 +154,18 @@ public class SyncmaruProcessor
 
         int id;
         if (idOverride >= 0) id = idOverride;
-        else id = Integer.parseInt(liveChartObject.getMalID());
+        else
+        {
+            try
+            {
+                id = Integer.parseInt(liveChartObject.getMalID());
+            }
+            catch (NumberFormatException e)
+            {
+                e.printStackTrace();
+                return false;
+            }
+        }
 
         String url = MALQueryFactory.buildMALSearchQuery(title, strategy, termsWordLimit);
         log("\nProcessing MAL ID: " + id + " " + title);
