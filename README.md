@@ -3,7 +3,7 @@ Internal Java console application for syncing LiveChart.me card object to a comp
 
 Feel free to look over the code. 
 
-(You might be interested in checking on how MAL matching is being done since the official API doesn't provide getting by ID plus the official search API is prone to timeout even with a legit term).
+(You might be interested in checking on how MAL matching is being done since the official API doesn't provide getting objects by ID plus the official search API is prone to timeouts even with legit terms).
 
 ## Dependencies
 Below are the libraries used for Syncmaru:
