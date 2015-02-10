@@ -5,7 +5,7 @@ Feel free to look over the code.
 
 (You might be interested in checking on how MAL matching is being done since the official API doesn't provide getting by ID plus the official search API is prone to timeout even with a legit term).
 
-# Dependencies
+## Dependencies
 Below are the libraries used for Syncmaru:
 - OkHttp
 - Jsoup
@@ -13,11 +13,11 @@ Below are the libraries used for Syncmaru:
 - json.org - JSON
 - Google's GSON
 
-# Building
+## Building
 Provided that you already have the dependencies, directly clone the repo via Git or just use IntelliJ VCS checkout and compile.
 
 
-# License
+## License
 Wherever unmarked, the applicable parts of the software follows the license below:
 
 The MIT License (MIT)
