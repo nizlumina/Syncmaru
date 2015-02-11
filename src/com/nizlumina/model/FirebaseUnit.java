@@ -14,11 +14,11 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 
 //Simple class for FireBase CRUD tasks
-public class FirebasePush
+public class FirebaseUnit
 {
     private String mEndPoint;
 
-    private FirebasePush(String endpoint, boolean fromBuilder)
+    private FirebaseUnit(String endpoint, boolean fromBuilder)
     {
         this.mEndPoint = endpoint;
     }
@@ -40,14 +40,34 @@ public class FirebasePush
         return false;
     }
 
+    public String getString()
+    {
+        WebUnit webUnit = new WebUnit();
+        Call task = createTask("GET", null, webUnit, mEndPoint);
+        try
+        {
+            return task.execute().body().string();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private Call createTask(String httpMethod, String jsonPayload, WebUnit webUnit, String url)
     {
-        return webUnit.getClient().newCall(
-                new Request.Builder()
-                        .url(url)
-                        .method(httpMethod,
-                                RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonPayload))
-                        .build());
+        Request.Builder requestBuilder = new Request.Builder()
+                .url(url);
+
+        if (jsonPayload != null)
+        {
+            requestBuilder.method(httpMethod,
+                    RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonPayload));
+        }
+        else requestBuilder.method(httpMethod, null);
+
+        return webUnit.getClient().newCall(requestBuilder.build());
     }
 
     public static class Builder
@@ -111,7 +131,7 @@ public class FirebasePush
          *
          * @return A FirebasePush object ready to be pushed. Return null on failure.
          */
-        public FirebasePush build()
+        public FirebaseUnit build()
         {
             try
             {
@@ -120,7 +140,7 @@ public class FirebasePush
 
 
                 String finalEndpoint = mUriBuilder.build().toURL().toString();
-                return new FirebasePush(finalEndpoint, true);
+                return new FirebaseUnit(finalEndpoint, true);
             }
             catch (URISyntaxException e)
             {

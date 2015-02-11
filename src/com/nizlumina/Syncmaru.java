@@ -1,15 +1,22 @@
 package com.nizlumina;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nizlumina.factory.LiveChartWebFactory;
-import com.nizlumina.model.FirebasePush;
+import com.nizlumina.model.FirebaseUnit;
 import com.nizlumina.model.LiveChartObject;
+import com.nizlumina.model.SeasonHash;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Syncmaru
@@ -24,6 +31,8 @@ public class Syncmaru
     public static final String HUMMINGBIRD_CLIENTID = Config.HUMMINGBIRD_CLIENTID; //insert your registered Hummingbird key here
     public static final String HUMMINGBIRD_USERAGENT = Config.HUMMINGBIRD_USERAGENT;
 
+    private static final String HASH_DEFAULT_PATH = "/seasons";
+
     //Full chart can be obtained via Chrome element inspection
 
     public static void main(String[] args) throws IOException
@@ -32,7 +41,7 @@ public class Syncmaru
         while (!quit)
         {
             Scanner scanner = new Scanner(System.in);
-            log("Insert input:\nP: Parse LiveChart chart (web)\nU: Start Firebase jobs");
+            log("Insert input:\nP: Parse LiveChart chart (web)\nU: Start Firebase upload jobs\nH: Start Firebase JSON hashing jobs");
             String firstInput = scanner.nextLine();
 
             if (firstInput.equalsIgnoreCase("P"))
@@ -86,32 +95,98 @@ public class Syncmaru
                 String endpoint;
                 if (kbInput.length() > 0) endpoint = kbInput;
                 else endpoint = FIREBASE_DEFAULT_ENDPOINT;
-                boolean exit = false;
-                while (!exit)
-                {
-                    processFirebase(scanner, endpoint);
+                processFirebaseUpload(scanner, endpoint);
 
-                    log("Exit? Input Y to exit current task, Q to fully quit, or anything else to return back for payload jobs");
-                    String exitInput = scanner.nextLine();
-                    if (exitInput.equalsIgnoreCase("Y"))
-                    {
-                        log("Payload task exited");
-                        exit = true;
-                    }
-                    if (exitInput.equalsIgnoreCase("Q"))
-                    {
-                        exit = true;
-                        quit = true;
-                    }
-                }
 
+            }
+
+            if (firstInput.equalsIgnoreCase("H"))
+            {
+                processHashingUpload(scanner);
+            }
+
+
+            log("Exit? Q to fully quit, or anything else to return back for payload jobs");
+            String exitInput = scanner.nextLine();
+            if (exitInput.equalsIgnoreCase("Q"))
+            {
+                quit = true;
             }
         }
 
 
     }
 
-    private static void processFirebase(Scanner scanner, String endpoint)
+    //Since I don't want to bother with hosting and Firebase Cache-Control header is only supported thru hosted app and not the default database accessed via REST API)
+    private static void processHashingUpload(Scanner scanner)
+    {
+
+        log("Using default endpoint.");
+
+        boolean pathDecided = false;
+        String pathInput = null;
+
+        while (!pathDecided)
+        {
+            log("Input the relative path to hash its JSON e.g /cakes/yesterday");
+            pathInput = scanner.nextLine();
+            log("Path to be hashed [" + pathInput + "]");
+            log("ENTER to continue or F to fix above path");
+            if (!scanner.nextLine().equalsIgnoreCase("F")) pathDecided = true;
+        }
+
+        if (pathInput != null)
+        {
+            log("Automated task started");
+            log("Using default URL key for hash index:" + HASH_DEFAULT_PATH);
+            Gson gson = new Gson();
+            String formedEndpoint = "https://" + FIREBASE_DEFAULT_ENDPOINT + HASH_DEFAULT_PATH;
+
+            //Get the index
+
+            FirebaseUnit hashIndexGet = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, formedEndpoint).build();
+            String indexJSON = hashIndexGet.getString();
+            TypeToken<List<SeasonHash>> hashTypeToken = new TypeToken<List<SeasonHash>>() {};
+            List<SeasonHash> hashIndex = gson.fromJson(indexJSON, hashTypeToken.getType());
+            if (hashIndex == null) hashIndex = new ArrayList<SeasonHash>();
+
+            //Hash the JSON response in the url
+            String hashingURL = "https://" + FIREBASE_DEFAULT_ENDPOINT + pathInput;
+
+            FirebaseUnit firebaseGet = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, hashingURL).build();
+
+            String json = firebaseGet.getString();
+            String hashOutput = DigestUtils.md5Hex(json);
+            log("HASH " + hashOutput);
+
+            //Roll your own if you want
+            SeasonHash seasonHash = new SeasonHash(pathInput.replace("/anime/", "").replaceAll("\\W+", "-"), hashOutput);
+
+
+            //Check index
+            Map<String, SeasonHash> searchMap = new HashMap<String, SeasonHash>();
+            for (SeasonHash indexedHash : hashIndex)
+            {
+                searchMap.put(indexedHash.getSeasonName(), indexedHash);
+            }
+            searchMap.put(seasonHash.getSeasonName(), seasonHash); //update
+
+            List<SeasonHash> finalIndex = new ArrayList<SeasonHash>(searchMap.values());
+
+
+            String payload = gson.toJson(finalIndex, hashTypeToken.getType()); //important to put them as list
+            FirebaseUnit firebasePush = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, formedEndpoint).build();
+            boolean uploadTask = firebasePush.push("PUT", payload);
+
+            log("Upload task success: " + String.valueOf(uploadTask).toUpperCase());
+
+        }
+
+
+    }
+
+
+    private static void processFirebaseUpload(Scanner scanner, String endpoint)
     {
         String formedEndpoint = "https://" + endpoint;
         log("Choose payloads");
@@ -137,7 +212,7 @@ public class Syncmaru
             boolean upload = false;
             while (!upload)
             {
-                FirebasePush.Builder builder = new FirebasePush.Builder(FIREBASE_SECRETKEY, formedEndpoint);
+                FirebaseUnit.Builder builder = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, formedEndpoint);
 
                 log("Insert new path e.g /customer/americans");
 
