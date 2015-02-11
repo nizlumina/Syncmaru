@@ -3,7 +3,26 @@ Internal Java console application for syncing LiveChart.me card object to a comp
 
 Feel free to look over the code. 
 
-# License
+(You might be interested in checking on how MAL matching is being done since the official API doesn't provide getting objects by ID plus the official search API is prone to timeouts even with legit terms).
+
+## Config
+Make sure to declare your keys/registered user agents for the various services in the main Syncmaru.java (or a separate Config class). If you don't use it, then Firebase is optional. 
+
+During my testing, you do not seems to need a white-listed MAL user agent since providing a legit user and password is enough for the API. However do try getting a whitelisted user agent if you use it for production.
+
+## Dependencies
+Below are the libraries used for Syncmaru:
+- OkHttp
+- Jsoup
+- Apache Commons I/O
+- json.org - JSON
+- Google's GSON
+
+## Building
+Provided that you already have the dependencies, directly clone the repo via Git or just use IntelliJ VCS checkout and compile.
+
+
+## License
 Wherever unmarked, the applicable parts of the software follows the license below:
 
 The MIT License (MIT)
