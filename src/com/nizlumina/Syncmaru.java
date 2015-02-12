@@ -6,6 +6,7 @@ import com.nizlumina.factory.LiveChartWebFactory;
 import com.nizlumina.model.FirebaseUnit;
 import com.nizlumina.model.LiveChartObject;
 import com.nizlumina.model.Season;
+import com.nizlumina.utils.SeasonType;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -14,6 +15,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -175,6 +178,20 @@ public class Syncmaru
 
             List<Season> finalIndex = new ArrayList<Season>(searchMap.values());
 
+            //sort
+            Collections.sort(finalIndex, new Comparator<Season>()
+            {
+                @Override
+                public int compare(Season o1, Season o2)
+                {
+                    SeasonType seasonA = SeasonType.fromString(o1.getSeason());
+                    SeasonType seasonB = SeasonType.fromString(o2.getSeason());
+                    int firstCompare = o1.getYear() - o2.getYear();
+                    if (firstCompare == 0)
+                        return seasonA.compareTo(seasonB);
+                    return firstCompare;
+                }
+            });
 
             String payload = gson.toJson(finalIndex, hashTypeToken.getType()); //important to put them as list
             FirebaseUnit firebasePush = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, formedEndpoint).build();

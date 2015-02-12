@@ -14,6 +14,11 @@ public class Season
         this.md5 = md5;
     }
 
+    public static String makeIndexKey(String season, int year)
+    {
+        return season.toLowerCase() + year;
+    }
+
     public int getYear()
     {
         return year;
