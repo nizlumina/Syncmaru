@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.nizlumina.factory.LiveChartWebFactory;
 import com.nizlumina.model.FirebaseUnit;
 import com.nizlumina.model.LiveChartObject;
-import com.nizlumina.model.SeasonHash;
+import com.nizlumina.model.Season;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -146,9 +146,9 @@ public class Syncmaru
 
             FirebaseUnit hashIndexGet = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, formedEndpoint).build();
             String indexJSON = hashIndexGet.getString();
-            TypeToken<List<SeasonHash>> hashTypeToken = new TypeToken<List<SeasonHash>>() {};
-            List<SeasonHash> hashIndex = gson.fromJson(indexJSON, hashTypeToken.getType());
-            if (hashIndex == null) hashIndex = new ArrayList<SeasonHash>();
+            TypeToken<List<Season>> hashTypeToken = new TypeToken<List<Season>>() {};
+            List<Season> seasonList = gson.fromJson(indexJSON, hashTypeToken.getType());
+            if (seasonList == null) seasonList = new ArrayList<Season>();
 
             //Hash the JSON response in the url
             String hashingURL = "https://" + FIREBASE_DEFAULT_ENDPOINT + pathInput;
@@ -160,18 +160,20 @@ public class Syncmaru
             log("HASH " + hashOutput);
 
             //Roll your own if you want
-            SeasonHash seasonHash = new SeasonHash(pathInput.replace("/anime/", "").replaceAll("\\W+", "-"), hashOutput);
-
+            String seasonInput = pathInput.replace("/anime/", "").replaceAll("\\W+", "-");
+            String stringArr[] = seasonInput.split("-");
+            Season season = new Season(stringArr[0], Integer.parseInt(stringArr[1].trim()), hashOutput);
+            log(season.getSeason() + " [" + season.getYear() + "]");
 
             //Check index
-            Map<String, SeasonHash> searchMap = new HashMap<String, SeasonHash>();
-            for (SeasonHash indexedHash : hashIndex)
+            Map<String, Season> searchMap = new HashMap<String, Season>();
+            for (Season indexedSeason : seasonList)
             {
-                searchMap.put(indexedHash.getSeasonName(), indexedHash);
+                searchMap.put(indexedSeason.getIndexKey(), indexedSeason);
             }
-            searchMap.put(seasonHash.getSeasonName(), seasonHash); //update
+            searchMap.put(season.getIndexKey(), season); //update
 
-            List<SeasonHash> finalIndex = new ArrayList<SeasonHash>(searchMap.values());
+            List<Season> finalIndex = new ArrayList<Season>(searchMap.values());
 
 
             String payload = gson.toJson(finalIndex, hashTypeToken.getType()); //important to put them as list
