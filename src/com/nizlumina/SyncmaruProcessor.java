@@ -33,10 +33,12 @@ public class SyncmaruProcessor
     private final List<CompositeData> mCompositeDatas;
     private final String mSeason;
     private final String mYear;
+    private final int malTimeout = 5;
     int iLimit = 0;
     private boolean logging = true;
     private int debugLimit = 1;
     private List<LiveChartObject> mFailures;
+
 
     public SyncmaruProcessor(List<LiveChartObject> liveChartObjects, String season, String year)
     {
@@ -46,8 +48,8 @@ public class SyncmaruProcessor
 
         malWebUnit = new WebUnit();
         malWebUnit.setUserAgent(Syncmaru.MAL_USERAGENT);
-        malWebUnit.getClient().setConnectTimeout(15, TimeUnit.SECONDS); //speed is king!
-        malWebUnit.getClient().setReadTimeout(15, TimeUnit.SECONDS); //speed is king!
+        malWebUnit.getClient().setConnectTimeout(malTimeout, TimeUnit.SECONDS); //speed is king!
+        malWebUnit.getClient().setReadTimeout(malTimeout, TimeUnit.SECONDS); //speed is king!
 
         malWebUnit.setCredentials(Syncmaru.MAL_USERNAME, Syncmaru.MAL_PASSWORD);
 

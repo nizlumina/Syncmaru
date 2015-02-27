@@ -131,7 +131,7 @@ public class Syncmaru
 
         while (!pathDecided)
         {
-            log("Input the relative path to hash its JSON e.g /cakes/yesterday");
+            log("Input the relative path to hash its JSON e.g /anime/winter/2015");
             pathInput = scanner.nextLine();
             log("Path to be hashed [" + pathInput + "]");
             log("ENTER to continue or F to fix above path");
@@ -244,7 +244,7 @@ public class Syncmaru
 
                 log("PATH:\n" + builder.getSamplePath());
 
-                log("\nInput Y to proceed with uploading or ENTER to repair current path");
+                log("\nInput Y to proceed with uploading or anything else to repair current path");
 
                 String proceedUploadString = scanner.nextLine();
                 if (proceedUploadString.trim().equalsIgnoreCase("Y"))
