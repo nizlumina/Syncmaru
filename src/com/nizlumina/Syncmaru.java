@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,48 +45,12 @@ public class Syncmaru
         while (!quit)
         {
             Scanner scanner = new Scanner(System.in);
-            log("Insert input:\nP: Parse LiveChart chart (web)\nU: Start Firebase upload jobs\nH: Start Firebase JSON hashing jobs");
+            log("Insert input:\nP: Parse LiveChart chart (web)\nU: Start Firebase upload jobs\nH: Start Firebase JSON hashing jobs\nA: For Auto (Quickly do all above)");
             String firstInput = scanner.nextLine();
 
             if (firstInput.equalsIgnoreCase("P"))
             {
-                log("Select season:");
-                int i = 0;
-                for (LiveChartWebFactory.Season season : LiveChartWebFactory.Season.values())
-                {
-                    log(i++ + " - " + season.name());
-                }
-                int seasonChosen = Integer.parseInt(scanner.nextLine());
-
-                String seasonChosenString = null;
-
-                for (LiveChartWebFactory.Season season : LiveChartWebFactory.Season.values())
-                {
-                    if (season.ordinal() == seasonChosen) seasonChosenString = season.toString();
-                }
-
-                if (seasonChosenString != null)
-                {
-                    log("Chosen: " + seasonChosenString);
-
-                    log("\nInput year (minimum 2013):");
-                    String yearChosen = scanner.nextLine();
-
-                    log("Chosen: " + yearChosen);
-
-
-                    List<LiveChartObject> chartObjects = LiveChartWebFactory.requestChart(LiveChartWebFactory.Season.valueOf(seasonChosenString), yearChosen);
-
-                    log("Results size:" + chartObjects.size());
-                    //match with hummingbird
-                    //resolve to final data
-                    //save to local path
-                    //SyncmaruProcessor processor = new SyncmaruProcessor(results, scraper.getScrapedSeason(), 2014);
-                    SyncmaruProcessor processor = new SyncmaruProcessor(chartObjects, seasonChosenString, yearChosen);
-                    processor.processLinkage();
-
-                }
-                else log("Chosen season is wrong!");
+                processParse(scanner);
             }
             if (firstInput.equalsIgnoreCase("U"))
             {
@@ -108,6 +73,11 @@ public class Syncmaru
                 processHashingUpload(scanner);
             }
 
+            if (firstInput.equalsIgnoreCase("A"))
+            {
+                processAuto(scanner);
+            }
+
 
             log("Exit? Q to fully quit, or anything else to return back for payload jobs");
             String exitInput = scanner.nextLine();
@@ -120,15 +90,57 @@ public class Syncmaru
 
     }
 
+    private static void processParse(Scanner scanner)
+    {
+        String seasonChosenString = chooseSeason(scanner);
+
+        if (seasonChosenString != null)
+        {
+            log("Chosen: " + seasonChosenString);
+
+            String yearChosen = chooseYear(scanner);
+
+
+            List<LiveChartObject> chartObjects = LiveChartWebFactory.requestChart(LiveChartWebFactory.Season.valueOf(seasonChosenString), yearChosen);
+
+            log("Results size:" + chartObjects.size());
+            //match with hummingbird
+            //resolve to final data
+            //save to local path
+            //SyncmaruProcessor processor = new SyncmaruProcessor(results, scraper.getScrapedSeason(), 2014);
+            SyncmaruProcessor processor = new SyncmaruProcessor(chartObjects, seasonChosenString, yearChosen);
+            processor.processLinkage();
+
+        }
+        else log("Chosen season is wrong!");
+    }
+
+    private static String chooseSeason(Scanner scanner)
+    {
+        log("Select season:");
+        int i = 0;
+        for (LiveChartWebFactory.Season season : LiveChartWebFactory.Season.values())
+        {
+            log(i++ + " - " + season.name());
+        }
+        int seasonChosen = Integer.parseInt(scanner.nextLine());
+
+        String seasonChosenString = null;
+
+        for (LiveChartWebFactory.Season season : LiveChartWebFactory.Season.values())
+        {
+            if (season.ordinal() == seasonChosen) seasonChosenString = season.toString();
+        }
+        return seasonChosenString;
+    }
+
     //Since I don't want to bother with hosting and Firebase Cache-Control header is only supported thru hosted app and not the default database accessed via REST API)
     private static void processHashingUpload(Scanner scanner)
     {
-
         log("Using default endpoint.");
 
-        boolean pathDecided = false;
         String pathInput = null;
-
+        boolean pathDecided = false;
         while (!pathDecided)
         {
             log("Input the relative path to hash its JSON e.g /anime/winter/2015");
@@ -137,13 +149,22 @@ public class Syncmaru
             log("ENTER to continue or F to fix above path");
             if (!scanner.nextLine().equalsIgnoreCase("F")) pathDecided = true;
         }
+        updateHashIndex(pathInput, false);
+    }
 
+    private static boolean updateHashIndex(String pathInput, boolean fromAuto)
+    {
+        boolean uploadTask = false;
         if (pathInput != null)
         {
             log("Automated task started");
             log("Using default URL key for hash index:" + HASH_DEFAULT_PATH);
             Gson gson = new Gson();
-            String formedEndpoint = "https://" + FIREBASE_DEFAULT_ENDPOINT + HASH_DEFAULT_PATH;
+            String formedEndpoint = FIREBASE_DEFAULT_ENDPOINT + HASH_DEFAULT_PATH;
+            if (!formedEndpoint.startsWith("https://"))
+            {
+                formedEndpoint = "https://" + formedEndpoint;
+            }
 
             //Get the index
 
@@ -154,8 +175,18 @@ public class Syncmaru
             if (seasonList == null) seasonList = new ArrayList<Season>();
 
             //Hash the JSON response in the url
-            String hashingURL = "https://" + FIREBASE_DEFAULT_ENDPOINT + pathInput;
+            String hashingURL;
+            if (!fromAuto)
+                hashingURL = FIREBASE_DEFAULT_ENDPOINT + pathInput;
+            else
+                hashingURL = pathInput;
 
+            if (!hashingURL.startsWith("https://"))
+            {
+                hashingURL = "https://" + hashingURL;
+            }
+
+            log(hashingURL);
             FirebaseUnit firebaseGet = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, hashingURL).build();
 
             String json = firebaseGet.getString();
@@ -163,7 +194,8 @@ public class Syncmaru
             log("HASH " + hashOutput);
 
             //Roll your own if you want
-            String seasonInput = pathInput.replace("/anime/", "").replaceAll("\\W+", "-");
+            int subIndex = pathInput.indexOf("/anime/");
+            String seasonInput = pathInput.substring(subIndex, pathInput.length()).replace("/anime/", "").replaceAll("\\W+", "-");
             String stringArr[] = seasonInput.split("-");
             Season season = new Season(stringArr[0], Integer.parseInt(stringArr[1].trim()), hashOutput);
             log(season.getSeason() + " [" + season.getYear() + "]");
@@ -195,15 +227,30 @@ public class Syncmaru
 
             String payload = gson.toJson(finalIndex, hashTypeToken.getType()); //important to put them as list
             FirebaseUnit firebasePush = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, formedEndpoint).build();
-            boolean uploadTask = firebasePush.push("PUT", payload);
-
-            log("Upload task success: " + String.valueOf(uploadTask).toUpperCase());
-
+            uploadTask = firebasePush.push("PUT", payload);
         }
-
-
+        log("Upload task success: " + String.valueOf(uploadTask).toUpperCase());
+        return uploadTask;
     }
 
+    private static boolean autoProcessFirebaseUpload(File file, String endpoint, String method)
+    {
+        try
+        {
+            final String selectedJSONPayload = IOUtils.toString(new FileInputStream(file));
+            FirebaseUnit.Builder builder = new FirebaseUnit.Builder(FIREBASE_SECRETKEY, endpoint);
+            return builder.build().push(method, selectedJSONPayload);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     private static void processFirebaseUpload(Scanner scanner, String endpoint)
     {
@@ -263,6 +310,44 @@ public class Syncmaru
         {
             e.printStackTrace();
         }
+    }
+
+    private static void processAuto(Scanner scanner)
+    {
+
+        String seasonChosenString = chooseSeason(scanner);
+        log("Chosen: " + seasonChosenString);
+
+        if (seasonChosenString != null)
+        {
+            String yearChosen = chooseYear(scanner);
+
+            List<LiveChartObject> chartObjects = LiveChartWebFactory.requestChart(LiveChartWebFactory.Season.valueOf(seasonChosenString), yearChosen);
+
+            log("Results size:" + chartObjects.size());
+
+            SyncmaruProcessor processor = new SyncmaruProcessor(chartObjects, seasonChosenString, yearChosen);
+            File json = processor.processLinkage();
+            String endpoint = "https://" + FIREBASE_DEFAULT_ENDPOINT + "/anime/" + seasonChosenString.toLowerCase() + "/" + yearChosen;
+            log("ENDPOINT: " + endpoint);
+            boolean successUpload = autoProcessFirebaseUpload(json, endpoint, "PUT");
+
+            if (successUpload)
+            {
+                updateHashIndex(endpoint, true);
+            }
+        }
+        else log("Chosen season is wrong!");
+
+    }
+
+    private static String chooseYear(Scanner scanner)
+    {
+        log("\nInput year (minimum 2013):");
+        String yearChosen = scanner.nextLine();
+
+        log("Chosen: " + yearChosen);
+        return yearChosen;
     }
 
     private static void log(String string)

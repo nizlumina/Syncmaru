@@ -61,11 +61,11 @@ public class SyncmaruProcessor
         mCompositeDatas = new ArrayList<CompositeData>();
     }
 
-    public void processLinkage()
+    public File processLinkage()
     {
         processLiveChartObject();
         processHummingbirdData();
-        saveLocal();
+        return saveLocal();
     }
 
     private void processLiveChartObject()
@@ -285,20 +285,23 @@ public class SyncmaruProcessor
         }
     }
 
-    private void saveLocal()
+    private File saveLocal()
     {
         String jsonString = CompositeDataJSONFactory.listToJSON(mCompositeDatas);
         // /year/season
         try
         {
-            IOUtils.write(jsonString, new FileOutputStream(new File("jsonpayloads/OUTPUT_" + mSeason + mYear + ".json")));
+            final File file = new File("jsonpayloads/OUTPUT_" + mSeason + mYear + ".json");
+            IOUtils.write(jsonString, new FileOutputStream(file));
             String saved = mCompositeDatas.size() + " objects saved!";
             log(saved);
+            return file;
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
+        return null;
     }
 
     private void log(String logString)
