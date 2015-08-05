@@ -61,3 +61,7 @@ crashlytics-build.properties
 
 # Local config
 src/com/nizlumina/Config.java
+
+# Project output and input
+jsonpayloads/
+input/
