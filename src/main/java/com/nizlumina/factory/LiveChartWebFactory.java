@@ -34,7 +34,7 @@ public class LiveChartWebFactory
 
     private static String makeEndpoint(Season season, String year)
     {
-        return ENDPOINT + season.name() + "-" + year;
+        return ENDPOINT + season.name() + "-" + year + "/tv";
     }
 
     public enum Season

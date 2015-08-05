@@ -13,7 +13,7 @@ import java.util.List;
 
 public class LiveChartScraper
 {
-    private static final String OBJECT_IDENTIFIER = "article";
+    private static final String OBJECT_IDENTIFIER = "anime-card";
 
     public List<LiveChartObject> scrape(String html)
     {
@@ -21,7 +21,7 @@ public class LiveChartScraper
 
         Document document = Jsoup.parse(html);
 
-        Elements seriesObjects = document.getElementsByTag(OBJECT_IDENTIFIER);
+        Elements seriesObjects = document.getElementsByClass(OBJECT_IDENTIFIER);
         for (Element seriesObject : seriesObjects)
         {
             LiveChartObject chartObject = processObject(seriesObject);
